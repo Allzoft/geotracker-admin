@@ -1,0 +1,38 @@
+<div class="flex transition-ease-in-out transition-duration-500">
+  <div
+    class="fixed flex z-1 transition-ease-in-out transition-duration-500"
+    [ngClass]="{
+    '-translate-x-100 fixed w-2': layoutService.state.staticMenuDesktopInactive,
+    'w-2  flex': !layoutService.state.staticMenuDesktopInactive && !layoutService.isMobile(),
+    'fixed z-3 w-full': layoutService.isMobile() && layoutService.state.staticMenuMobileActive,
+    'hidden': !layoutService.isMobile() || !layoutService.state.staticMenuMobileActive
+  }"
+  >
+    <app-menu class="fixed w-full md:w-2" />
+  </div>
+
+  <!-- <div
+    class="flex flex-column transition-ease-in-out transition-duration-500 transition-all w-12 md:w-10"
+    [ngClass]="!layoutService.state.staticMenuDesktopInactive  && !layoutService.isMobile() ? 'ml-' : ''"
+  > -->
+  <div
+    class="flex flex-column transition-ease-in-out transition-duration-500 transition-all"
+    [ngClass]="{
+      'w-12': layoutService.state.staticMenuDesktopInactive  && !layoutService.isMobile(),
+      'w-10': !layoutService.state.staticMenuDesktopInactive && !layoutService.isMobile(),
+      'hidden': layoutService.isMobile() && layoutService.state.staticMenuMobileActive,
+      'w-12 mb-1': layoutService.isMobile() && !layoutService.state.staticMenuMobileActive
+    }"
+  >
+    <app-top-bar />
+    @if (layoutService.isMobile()) {
+    <div class="w-full h-4rem"></div>
+    }
+    <div
+      class="pt-5 px-2"
+      [ngClass]="!layoutService.state.staticMenuDesktopInactive  && !layoutService.isMobile() ? 'ml-2' : ''"
+    >
+      <router-outlet />
+    </div>
+  </div>
+</div>
