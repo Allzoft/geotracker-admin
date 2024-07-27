@@ -1,8 +1,6 @@
 <section class="w-full grid m-0 p-0">
   <div class="col-12 md:col-9 px-3">
-    <p-overlayPanel #op>
-
-    </p-overlayPanel>
+    <p-overlayPanel #op> </p-overlayPanel>
     <div
       style="background-color: #18181b; border-color: #18181b;"
       (click)="layoutService.isMobile() ? op.toggle($event) : ''"
@@ -20,14 +18,14 @@
         <i class="pi pi-mobile px-2 text-2xl"></i>
         <div class="flex flex-column gap-1">
           <div class="text-xs text-400">Registrados</div>
-          <div class="text-sm md:text-base">{{ 725 }} disp.</div>
+          <div class="text-sm md:text-base">{{ devices().length }} disp.</div>
         </div>
       </div>
       <div class="flex gap-2 w-full align-items-center">
-        <i class="pi pi-map px-2 text-2xl"></i>
+        <i class="pi pi-desktop px-2 text-2xl"></i>
         <div class="flex flex-column gap-1">
           <div class="text-xs text-400">Disp. en seg.</div>
-          <div class="text-sm md:text-base">{{ 32 }} disp.</div>
+          <div class="text-sm md:text-base">{{ 0 }} disp.</div>
         </div>
       </div>
       @if (!layoutService.isMobile()) {
@@ -43,17 +41,18 @@
     </div>
   </div>
   @if (layoutService.isMobile()) {
-    <div class="col-6 px-3">
-      <p-dropdown
-        [options]="filterOptions"
-        variant="filled"
-        [(ngModel)]="valueFilter"
-        styleClass="border-0 w-full"
-      ></p-dropdown>
-    </div>
-    }
+  <div class="col-6 px-3">
+    <p-dropdown
+      [options]="filterOptions"
+      variant="filled"
+      [(ngModel)]="valueFilter"
+      styleClass="border-0 w-full"
+    ></p-dropdown>
+  </div>
+  }
   <div class="col-6 md:col-3 px-3">
     <p-button
+      (onClick)="createDevice()"
       styleClass="w-full md:h-4rem text-white font-semibold bg-primary-700 border-0"
       [label]="layoutService.isMobile() ? 'Agregar' : '+ Agregar Dispositivo'"
       [icon]="layoutService.isMobile() ? 'text-white pi pi-plus' : ''"
@@ -64,12 +63,13 @@
 <div class="px-3">
   <div class="w-full border-300 border-round mt-4 overflow-hidden">
     <p-table
-      [value]="devices"
+      #dt
+      [value]="devices()"
       styleClass="p-datatable-sm p-datatable-striped "
       [paginator]="true"
       [rows]="10"
       [showCurrentPageReport]="true"
-      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Dispositivo"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} dispositivos"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -78,20 +78,20 @@
             pSortableColumn="name"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Nombre <p-sortIcon class="ml-8" field="name" />
+            Identificador <p-sortIcon class="ml-8" field="name" />
           </th>
           <th
-            pSortableColumn="email"
+            pSortableColumn="type_device"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Rol <p-sortIcon class="ml-8" field="email" />
+            Tipo <p-sortIcon class="ml-8" field="type_device" />
           </th>
 
           <th
-            pSortableColumn="phone"
+            pSortableColumn="info"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Celular <p-sortIcon class="ml-8" field="phone" />
+            Información <p-sortIcon class="ml-8" field="info" />
           </th>
           <th
             pSortableColumn="createAt"
@@ -102,8 +102,8 @@
           <th class="surface-50 border-round"></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-user>
-        @if (loading) { @for (skeleton of skeletonTab; track $index) {
+      <ng-template pTemplate="body" let-device>
+        @if (loading()) { @for (skeleton of skeletonTab; track $index) {
         <tr>
           <td class="pl-3 flex gap-2 align-items-center">
             <p-skeleton size="2rem" shape="circle"></p-skeleton>
@@ -126,26 +126,32 @@
         </tr>
         } } @else {
         <tr>
-          <td class="pl-5">
-
-          </td>
+          <td class="pl-5"></td>
           <td class="">
             <div class="flex gap-2 align-items-center">
-
-              <span>{{ user.name }} </span>
+              <span>{{ device.name }} </span>
+            </div>
+          </td>
+          <td>
+            <div class="flex gap-2 align-items-center">
+              @if (device.type_device.includes('facebook')) {
+              <i class="pi pi-facebook text-blue-500"></i>
+              } @if (device.type_device.includes('whatsapp')) {
+              <i class="pi pi-whatsapp text-green-500"></i>
+              } @if (device.type_device.includes('telegram')) {
+              <i class="pi pi-telegram text-blue-600"></i>
+              } @if (device.type_device.includes('Otro')) {
+              <i class="pi pi-circle text-primary"></i>
+              }
+              <span>{{ device.type_device }} </span>
             </div>
           </td>
           <td>
             <div class="flex align-items-center">
-              <span>{{ user.role.name }} </span>
+              <span class="">{{ device.info }} </span>
             </div>
           </td>
-          <td>
-            <div class="flex align-items-center">
-              <span>{{ user.phone }} </span>
-            </div>
-          </td>
-          <td>{{ user.created_at.split('T')[0] }}</td>
+          <td>{{ device.created_at.split('T')[0] }}</td>
           <td class="white-space-nowrap">
             <p-button
               severity="secondary"
@@ -153,6 +159,7 @@
               [rounded]="true"
               [text]="true"
               styleClass="h-2rem w-2rem ml-2"
+              (onClick)="editDevice(device)"
             ></p-button>
             <p-button
               icon="pi pi-trash"
@@ -160,6 +167,7 @@
               [rounded]="true"
               [text]="true"
               styleClass="h-2rem w-2rem ml-2"
+              (onClick)="deleteDevice(device)"
             ></p-button>
           </td>
         </tr>
@@ -168,10 +176,110 @@
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="6">
-            <!-- <app-card-empty-list nameEmptyList="useres"></app-card-empty-list> -->
+            <app-card-empty-list
+              nameEmptyList="dispositivos"
+            ></app-card-empty-list>
           </td>
         </tr>
       </ng-template>
     </p-table>
   </div>
 </div>
+
+<p-sidebar [(visible)]="showDevice" position="right">
+  <ng-template pTemplate="header"
+    ><span class="font-semibold text-xl"
+      >Información de disp.</span
+    ></ng-template
+  >
+  <ng-template pTemplate="content">
+    <div class="w-full flex flex-column gap-7">
+      <div class="flex flex-column gap-2">
+        <label class="text-sm" for="name"
+          ><i class="pi pi-desktop mr-2 -mb-1"></i>Nombre</label
+        >
+
+        <input
+          id="name"
+          type="text"
+          pInputText
+          placeholder="Coloque un numero, nombre, etc."
+          [(ngModel)]="selectedDevice.name"
+          class="w-full"
+          [ngClass]="{'ng-invalid ng-dirty': selectedDevice.name.length === 0}"
+          [ngClass]="{'ng-invalid ng-dirty': inputsDirt.name}"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label class="text-sm" for="type">
+          <i class="pi pi-tag mr-2 -mb-1"></i>Tipo</label
+        >
+        <span class="p-input-icon-left">
+          <p-dropdown
+            [options]="optiosDevice"
+            [(ngModel)]="selectedDevice.type_device"
+            placeholder="Seleccione un tipo de estado"
+            styleClass=" w-full"
+            [ngClass]="{'ng-invalid ng-dirty': inputsDirt.type_device}"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div
+                class="flex align-items-center gap-2"
+                *ngIf="selectedDevice.type_device"
+              >
+                @if (selectedDevice.type_device.includes('facebook')) {
+                <i class="pi pi-facebook text-blue-500"></i>
+                } @if (selectedDevice.type_device.includes('whatsapp')) {
+                <i class="pi pi-whatsapp text-green-500"></i>
+                } @if (selectedDevice.type_device.includes('telegram')) {
+                <i class="pi pi-telegram text-blue-600"></i>
+                } @if (selectedDevice.type_device.includes('Otro')) {
+                <i class="pi pi-circle text-primary"></i>
+                }
+                <div>{{ selectedDevice.type_device }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-type pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                @if (type.includes('facebook')) {
+                <i class="pi pi-facebook text-blue-500"></i>
+                } @if (type.includes('whatsapp')) {
+                <i class="pi pi-whatsapp text-green-500"></i>
+                } @if (type.includes('telegram')) {
+                <i class="pi pi-telegram text-blue-600"></i>
+                } @if (type.includes('Otro')) {
+                <i class="pi pi-circle text-primary"></i>
+                }
+                <div>{{ type }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </span>
+      </div>
+
+      <div class="flex flex-column gap-2">
+        <label class="text-sm" for="priority">
+          <i class="pi pi-info-circle mr-2 -mb-1"></i> Detalles</label
+        >
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          class="w-full"
+          [(ngModel)]="selectedDevice.info"
+          placeholder="Más información sobre el dispositivo"
+        >
+        </textarea>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer"
+    ><p-button
+      styleClass="w-full bg-primary-700 text-white border-0"
+      [label]="selectedDevice.id_device === 0 ? 'Crear dispositivo' : 'Actualizar dispositivo'"
+      (onClick)="saveDevice()"
+    ></p-button
+  ></ng-template>
+</p-sidebar>
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog styleClass="w-auto md:w-5" position="bottom"></p-confirmDialog>
