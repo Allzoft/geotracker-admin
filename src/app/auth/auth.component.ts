@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UsersService } from '@services/users.service';
 import { UserLogin } from '@interfaces/user';
+import { LayoutService } from '@services/layout.service';
 
 @Component({
   standalone: true,
@@ -29,6 +30,7 @@ import { UserLogin } from '@interfaces/user';
   templateUrl: './auth.component.html',
 })
 export default class AuthComponent {
+  public layoutService = inject(LayoutService)
   private usersService = inject(UsersService);
   private messageService = inject(MessageService);
 

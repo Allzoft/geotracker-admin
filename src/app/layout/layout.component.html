@@ -1,5 +1,5 @@
 <div class="flex transition-ease-in-out transition-duration-500">
-  <div
+  <divF
     class="fixed flex z-1 transition-ease-in-out transition-duration-500"
     [ngClass]="{
     '-translate-x-100 fixed w-2': layoutService.state.staticMenuDesktopInactive,
@@ -8,8 +8,8 @@
     'hidden': !layoutService.isMobile() || !layoutService.state.staticMenuMobileActive
   }"
   >
-    <app-menu class="fixed w-full md:w-2" />
-  </div>
+    <app-menu style="background-color: #18181b;" class="fixed w-full md:w-2" />
+  </divF>
 
   <!-- <div
     class="flex flex-column transition-ease-in-out transition-duration-500 transition-all w-12 md:w-10"

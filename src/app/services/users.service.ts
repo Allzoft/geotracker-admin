@@ -251,6 +251,7 @@ export class UsersService {
     if (words.length === 2) {
       return words[0].charAt(0) + words[1].charAt(0);
     }
+
     return words[0].slice(0, 2);
   }
 }

@@ -1,81 +1,114 @@
 <section
-  class="z-1 flex justify-content-between w-12 px-4 shadow-4 bg-white"
+  class="z-1 flex justify-content-between w-12 px-4 shadow-4"
+  style="background-color: #18181b;"
   [ngClass]="{'fixed':layoutService.isMobile()}"
 >
   <div class="flex align-items-center gap-2">
     <p-button
       #menubutton
       [icon]="layoutService.state.staticMenuDesktopInactive ? 'pi pi-times' : 'pi pi-bars'"
-      severity="secondary"
-      [rounded]="true"
-      [outlined]="true"
-      styleClass="h-2rem w-2rem"
+      severity="contrast"
+      [text]="true"
       (click)="onMenuButtonClick()"
     />
     @if (!layoutService.isMobile()) {
-
-    <!-- <span class="p-input-icon-left">
-      <i class="pi pi-search text-base"></i>
-      <input
-        pInputText
-        type="text"
-        placeholder="Búsqueda global"
-        class="w-12rem sm:w-full p-inputtext-sm"
-        style="height: 35px;"
-      />
-    </span> -->
+    <div class="text-2xl font-semibold">{{getTitle()}}</div>
     }
-    <!-- <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb> -->
+
   </div>
 
   <ul class="list-none flex gap-2 justify-content-center align-items-center">
-    <li class=""></li>
-
-    <li
-      class="topbar-profile flex justify-content-center align-items-center gap-2"
-    >
-      <!-- <p-button
-        icon="pi pi-bell text-xl"
-        [style]="{'height': '40px','width': '40px'}"
-        [rounded]="true"
-      /> -->
+    <li class="flex align-items-center gap-2 mr-4">
+      <p-iconField iconPosition="right">
+        <p-inputIcon styleClass="pi pi-search " />
+        <input type="text" pInputText placeholder="Buscar aqui" />
+    </p-iconField>
       <p-button
-        severity="warning"
-        styleClass="flex align-items-center justify-content-center"
-        [style]="{'height': '40px','width': '40px'}"
-        [rounded]="true"
-        [text]="true"
-        (onClick)="onProfileButtonClick()"
+          icon="pi pi-cog text-white"
+          styleClass=" border-0"
+        />
+    </li>
+    <li class="flex align-items-center gap-2 mr-4">
+      <div class="relative">
+        <div
+          [style]="{'height': '0.7rem', 'width': '0.7rem'}"
+          class="bg-yellow-300 border-circle absolute right-0 top-0 z-2 -mt-1 -mr-1"
+        ></div>
+        <p-button
+          icon="pi pi-bell"
+          [outlined]="true"
+          styleClass="surface-50 border-0"
+        />
+      </div>
+      <div class="relative">
+        <!-- <div
+          [style]="{'height': '0.7rem', 'width': '0.7rem'}"
+          class="bg-yellow-300 border-circle absolute right-0 top-0 z-2 -mt-1 -mr-1"
+        ></div> -->
+        <p-button
+          icon="pi pi-comments"
+          [outlined]="true"
+          styleClass="surface-50 border-0"
+        />
+      </div>
+      <div class="relative">
+        <div
+          [style]="{'height': '0.7rem', 'width': '0.7rem'}"
+          class="surface-200 border-circle absolute right-0 top-0 z-2 -mt-1 -mr-1"
+        ></div>
+        <p-button
+          icon="pi pi-gift"
+          severity="contrast"
+          [outlined]="true"
+          styleClass="surface-50 border-0"
+        />
+      </div>
+    </li>
+
+    <li class="relative flex justify-content-center align-items-center gap-2">
+      <div
+        style="height: 2.4rem; width: 2.4rem;"
+        class="border-round surface-700 -mr-3 flex justify-content-center align-items-center"
       >
         @if (user()!.photo !== '') {
-        <img
-          [src]="user()!.photo"
-          class="border-circle"
-          style="width: 40px;"
-          alt="Profile"
-        />
+        <img [src]="user()!.photo" class="border-round w-full" alt="Profile" />
         } @else {
-        <img
-          src="../../../assets/perfil-image.png"
-          class="border-circle"
-          alt="Profile"
-          style="height: 40px; width: 40px;"
-        />
+        <div
+          class="text-50 font-bold flex align-items-center text-lg justify-content-center"
+        >
+          <i class="pi pi-user font-bold text-lg"></i>
+          <!-- {{ usersService.getInitials(user()!.name) | uppercase }} -->
+        </div>
         }
-      </p-button>
-      @if (!layoutService.isMobile()) {
-
-      <p-button
-        severity="secondary"
-        [rounded]="true"
-        class=""
-        icon="pi pi-sign-out "
-        [text]="true"
-        [style]="{'height': '35px', 'width': '35px'}"
-        (onClick)="closeSession()"
+      </div>
+      <p-splitButton
+        severity="primary"
+        [outlined]="true"
+        styleClass=""
+        severity="contrast"
+        (onClick)="onProfileButtonClick()"
+        [model]="items"
       >
-      </p-button>
-      }
+        <ng-template pTemplate="content">
+          <span class="flex align-items-center font-bold">
+            <!-- @if (user()!.photo !== '') {
+            <img
+              [src]="user()!.photo"
+              class="border-round"
+              style="height: 1rem;"
+              alt="Profile"
+            />
+            } @else {
+            <div class="border-round h-2rem -ml-2 mr-2 w-2rem surface-200 flex align-items-center justify-content-center">
+              {{ usersService.getInitials(user()!.name) | uppercase }}
+            </div>
+            } -->
+            <span class="h-1rem w-7rem overflow-hidden text-overflow-ellipsis"
+              >{{user()!.name}}</span
+            >
+          </span>
+        </ng-template>
+      </p-splitButton>
     </li>
   </ul>
 </section>

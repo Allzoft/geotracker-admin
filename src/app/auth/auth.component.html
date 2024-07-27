@@ -1,34 +1,26 @@
 <section class="m-0">
-  <div class="flex flex-column md:flex-row w-full m-0">
+  <div class="relative flex flex-column md:flex-row justify-content-center w-full m-0 ">
+
+    @if (!layoutService.isMobile()) {
+      <div class="absolute top-0 left-0 w-full h-screen bg-white">
+        <img src="../../assets/wallpaper_auth.png" alt="wallpapper" class="w-full">
+      </div>
+
+    }
+
     <div
-      class="col-12 md:col-5 relative px-0 py-0 h-4rem md:h-screen hidden md:flex flex-column justify-content-center align-items-center overflow-hidden"
+      class="col-12 md:col-5 h-screen flex flex-column align-items-center gap-4 pt-6 px-0 md:px-4 shadow-4 z-3 bg-black-alpha-80"
     >
-      <div
-        class="absolute top-0 left-0 bg-black-alpha-40 w-full h-screen"
-      ></div>
-      <img
-        src="../../assets/bg-pasteur-login.jpg"
-        alt="bg-auth-login"
-        class="w-full block h-auto"
-      />
-    </div>
-    <div
-      class="col-12 md:col-7 h-screen flex flex-column align-items-center gap-4 pt-6 px-0 md:px-8 shadow-8"
-    >
-      <div class="w-12 px-6 flex flex-column align-items-center gap-4">
+      <div class="w-12 px-6 flex flex-column align-items-center gap-2">
         <div class="w-12 h-13rem w-13rem">
-          <img
-            src="../../assets/Logo clínica PASTEUR.png"
-            alt="logo"
-            class="w-full h-full"
-          />
+          <img src="../../assets/Logo.png" alt="logo" class="w-full h-full" />
         </div>
         <div class="w-full text-center text-2xl font-bold">
-          LABORATORIO CLÍNICO PASTEUR
+          <img src="../../assets/name_company.png" alt="logo" class="w-10" />
         </div>
       </div>
-      <div class="w-12 px-6 flex flex-column align-items-center gap-3">
-        <div class="w-12 mt-2 text-lg font-semibold text-center">
+      <div class="w-12 px-6 md:px-2  md:-mt-4 flex flex-column align-items-center gap-6 md:gap-3">
+        <div class="w-12  text-lg font-semibold text-center">
           ¡A trabajar! Ingrese ahora
         </div>
         <div class="w-12 flex flex-column align-items-center gap-3">
@@ -77,7 +69,7 @@
               inputId="id"
             ></p-checkbox>
             <span
-              class="text-sm text-red-400 cursor-pointer hover:underline text-right"
+              class="text-sm text-primary cursor-pointer hover:underline text-right"
               >¿Olvidaste tu contraseña?</span
             >
           </div>
@@ -95,6 +87,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </section>
 <p-toast position="top-center"></p-toast>
