@@ -1,1 +1,205 @@
-<p>roles works!</p>,
+<section class="w-full grid m-0 p-0">
+  <div class="col-12 px-3">
+    <div
+      style="background-color: #18181b; border-color: #18181b;"
+      class="w-full h-4rem border-round flex px-3 border-1 justify-content-between"
+    >
+      <div class="flex gap-2 align-items-center">
+        <i class="pi pi-check px-2 text-2xl"></i>
+        <div class="flex flex-column gap-1">
+          @if (layoutService.isMobile()) {
+          <div class="text-xs text-400">Total registrados</div>
+          } @else {
+          <div class="text-xs text-400">Total de roles registrados</div>
+          }
+          <div class="text-sm md:text-base">{{ roles().length }} rol(es)</div>
+        </div>
+      </div>
+      <div class="flex gap-2 align-items-center">
+        <div class="flex flex-column gap-1">
+          <div class="text-xs text-700">Seleccionados</div>
+          <div class="text-sm md:text-base text-center">
+            {{ selectedRols.length }}
+          </div>
+        </div>
+        <p-button
+          [icon]="layoutService.isMobile() ? 'pi text-white pi-plus' : ''"
+          severity="primary"
+          [label]="!layoutService.isMobile() ? '+Añadir' : ''"
+          (onClick)="createRole()"
+          styleClass=" border-0 text-white"
+          />
+          <p-button
+          [icon]="layoutService.isMobile() ? 'pi text-white pi-trash' : ''"
+          severity="danger"
+          [label]="!layoutService.isMobile() ? 'Eliminar' : ''"
+          styleClass="bg-red-600 border-0 text-white"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flex flex-column md:flex-row gap-1 md:gap-4 px-3">
+  @if (loadingRoles()) {
+  <div
+    class="col-12 md:col-6 p-0 md:mb-3 shadow-4 border-round mt-4 overflow-hidden h-10rem md:h-auto"
+  >
+    <p-skeleton styleClass="w-full h-full"></p-skeleton>
+  </div>
+  } @else {
+  <div
+    class="col-12 md:col-6 p-0 md:mb-3 shadow-4 border-round mt-4 overflow-hidden"
+  >
+    <p-table
+      #dt
+      [value]="roles()"
+      [showCurrentPageReport]="true"
+      styleClass="p-datatable-sm p-datatable-striped"
+      dataKey="id_role"
+      [(selection)]="selectedRols"
+      responsiveLayout="scroll"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th
+            pSortableColumn="name"
+            class="white-space-nowrap pl-4 h-3rem surface-50 border-round"
+          >
+            <p-tableHeaderCheckbox class="mr-2" />
+            Nombre
+            <p-sortIcon class="ml-8" field="name"></p-sortIcon>
+          </th>
+          <th class="surface-50"></th>
+          <th class="surface-50 border-round"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-role>
+        <tr>
+          <td class="pl-4">
+            <p-tableCheckbox [value]="role" class="mr-2" />
+            {{ role.name }}
+          </td>
+          <td></td>
+          <td class="flex align-items-center gap-2 sm:justify-content-end">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi text-primary-600 pi-pencil"
+              class="p-button-rounded p-button-text ml-auto sm:ml-0 w-2rem h-2rem"
+              (click)="editRole(role)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi text-primary-600 pi-trash"
+              class="p-button-rounded p-button-text ml-auto sm:ml-0 w-2rem h-2rem"
+              (click)="deleteRole(role)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3">
+            <!-- <app-card-empty-list nameEmptyList="roles" ></app-card-empty-list> -->
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  } @if (loadingAccesses()) {
+  <div
+    class="border-300 shadow-4 border-round mt-4 overflow-hidden w-full p-0 mb-3 h-30rem"
+  >
+    <p-skeleton styleClass="w-full h-full"></p-skeleton>
+  </div>
+  } @else {
+  <div
+    class="border-300 shadow-4 border-round mt-4 overflow-hidden w-full p-0 mb-3"
+  >
+    <div
+      class="h-3rem flex surface-50 border-round justify-content-center align-items-center"
+    >
+      <span class="font-semibold text-sm">FORMULARIO ROL</span>
+    </div>
+    <div class="grid">
+      <div class="col-12">
+        <div class="field grid flex justify-content-center">
+          <span class="p-input-icon-left w-6 mt-3">
+            <i class="pi pi-check text-base"></i>
+            <input
+              pInputText
+              type="text"
+              placeholder="Nombre de rol"
+              [(ngModel)]="selectedRole.name"
+              class="w-full"
+              [ngClass]="{'ng-invalid ng-dirty': inputsDirt.name}"
+            />
+          </span>
+        </div>
+        <div
+          class="h-3rem flex justify-content-center align-items-center surface-50 border-round"
+        >
+          <span class="font-semibold text-sm">Acceso</span>
+        </div>
+        <div class="flex mt-3">
+          <div class="col-6 pl-5">
+            @for (access of accesses(); track $index) {
+            <div class="flex align-items-center gap-2">
+              <p-checkbox
+                *ngIf="$index % 2 === 0"
+                [label]="access.name"
+                labelStyleClass="text-sm text-600 mt-2"
+                [value]="access.id_access"
+                [(ngModel)]="access.isSelect"
+                [binary]="true"
+                class="field"
+              >
+              </p-checkbox>
+              <i
+                [class]="'text-primary-700 mb-3 pi pi-' + access.icon "
+                *ngIf="$index % 2 === 0"
+              ></i>
+            </div>
+            }
+          </div>
+          <div class="col-6">
+            @for (access of accesses(); track $index) {
+            <div class="flex align-items-center gap-2">
+              <p-checkbox
+                *ngIf="$index % 2 === 1"
+                [label]="access.name"
+                labelStyleClass="text-sm text-600 mt-2"
+                [value]="access.id_access"
+                [(ngModel)]="access.isSelect"
+                [binary]="true"
+                class="field"
+              >
+              </p-checkbox>
+              <i
+                [class]="'text-primary-700 mb-3 pi pi-' + access.icon "
+                *ngIf="$index % 2 === 1"
+              ></i>
+            </div>
+            }
+          </div>
+        </div>
+        <div class="col-12 flex justify-content-end">
+          <p-button
+            icon="pi pi-check text-white"
+            label="Guardar"
+            styleClass="text-white"
+            (onClick)="saveRole()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</section>
+
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog styleClass="w-auto md:w-5" position="bottom"></p-confirmDialog>

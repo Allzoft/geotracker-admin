@@ -27,7 +27,6 @@ export class BreadcrumbComponent {
     const items: MenuItem[] = [];
     const url = this.router.url.substring(1);
     const words = url.split('/');
-    console.log(words);
     if (words[0] === 'admin') {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-building',

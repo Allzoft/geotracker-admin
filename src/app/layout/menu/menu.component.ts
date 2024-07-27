@@ -97,7 +97,7 @@ export class MenuComponent implements OnInit {
 
     const divisions = [
       { name: 'Análisis y control', icon: 'pi pi-table' },
-      { name: 'Pruebas', icon: 'pi pi-home' },
+      { name: 'Dispositivos', icon: 'pi pi-home' },
       { name: 'Administracion', icon: 'pi pi-cog' },
     ];
 
