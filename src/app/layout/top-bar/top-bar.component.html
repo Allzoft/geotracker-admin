@@ -1,6 +1,7 @@
 <section
-  class="z-1 flex justify-content-between w-12 px-4 "
+  class="z-1 flex justify-content-between w-12 px-4"
   [ngClass]="{'fixed':layoutService.isMobile()}"
+  [style]="layoutService.isMobile() ? 'background-color: #18181b   ':''"
 >
   <div class="flex align-items-center gap-2">
     <p-button
@@ -26,7 +27,7 @@
       <p-button icon="pi pi-cog text-white" styleClass=" border-0" />
       }
     </li>
-    <li class="flex align-items-center gap-2 mr-5  md:mr-4">
+    <li class="flex align-items-center gap-2 mr-5 md:mr-4">
       <div class="relative">
         <div
           [style]="{'height': '0.7rem', 'width': '0.7rem'}"

@@ -98,6 +98,9 @@ export class TopBarComponent {
     if(this.router.url.includes('dashboard')) return 'Dashboard'
     if(this.router.url.includes('users')) return 'Usuarios'
     if(this.router.url.includes('roles')) return 'Roles'
+    if(this.router.url.includes('track')) return 'Rastreo de dispositivo'
+    if(this.router.url.includes('list')) return 'Lista de dispositivos'
+    if(this.router.url.includes('recovery')) return 'Gestión de datos'
     return '';
   }
 }

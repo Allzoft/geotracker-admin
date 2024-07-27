@@ -39,6 +39,12 @@ export class BreadcrumbComponent {
         label: 'Panel de control',
       };
       items.push(newItem);
+    } else if (words[0] === 'devices') {
+      const newItem: MenuItem = {
+        icon: 'pi mr-2 pi-mobile',
+        label: 'Dispositivos',
+      };
+      items.push(newItem);
     }
     if (words[1] === 'users') {
       const newItem: MenuItem = {
@@ -60,6 +66,30 @@ export class BreadcrumbComponent {
         icon: 'pi mr-2 pi-table',
         label: 'Dashboard',
         url: 'admin/users',
+      };
+      items.push(newItem);
+    }
+    if (words[1] === 'track-devices') {
+      const newItem: MenuItem = {
+        icon: 'pi mr-2 pi-map-marker',
+        label: 'Rastreo de dispostivos',
+        url: 'devices/track-devices',
+      };
+      items.push(newItem);
+    } else if (words[1] === 'recovery-data') {
+      const newItem: MenuItem = {
+        icon: 'pi mr-2 pi-cloud-download',
+        label: 'Recuperación de archivos',
+        url: 'devices/recovery-data',
+      };
+      items.push(newItem);
+    }
+
+    if (words[1] === 'devices-list') {
+      const newItem: MenuItem = {
+        icon: 'pi mr-2 pi-desktop',
+        label: 'Listado de dispostivos',
+        url: 'devices/devices-list',
       };
       items.push(newItem);
     }

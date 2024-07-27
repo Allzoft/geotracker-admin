@@ -27,6 +27,34 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'devices',
+        children: [
+          {
+            path: 'recovery-data',
+            title: 'Recuperación de archivos',
+            loadComponent: () =>
+              import('./pages/devices/recovery-data/recovery-data.component'),
+          },
+          {
+            path: 'track-devices',
+            title: 'Rastreo de dispositivos',
+            loadComponent: () =>
+              import('./pages/devices/track-devices/track-devices.component'),
+          },
+          {
+            path: 'devices-list',
+            title: 'Lista de dispositivos',
+            loadComponent: () =>
+              import('./pages/devices/devices-list/devices-list.component'),
+          },
+          {
+            path: '',
+            redirectTo: 'devices',
+            pathMatch: 'full',
+          },
+        ],
+      },
+      {
         path: 'admin',
         children: [
           {
