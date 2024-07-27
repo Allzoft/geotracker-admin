@@ -14,21 +14,20 @@
     @if (!layoutService.isMobile()) {
     <div class="text-2xl font-semibold">{{getTitle()}}</div>
     }
-
   </div>
 
   <ul class="list-none flex gap-2 justify-content-center align-items-center">
     <li class="flex align-items-center gap-2 mr-4">
+      @if (!layoutService.isMobile()) {
+
       <p-iconField iconPosition="right">
         <p-inputIcon styleClass="pi pi-search " />
         <input type="text" pInputText placeholder="Buscar aqui" />
-    </p-iconField>
-      <p-button
-          icon="pi pi-cog text-white"
-          styleClass=" border-0"
-        />
+      </p-iconField>
+      <p-button icon="pi pi-cog text-white" styleClass=" border-0" />
+      }
     </li>
-    <li class="flex align-items-center gap-2 mr-4">
+    <li class="flex align-items-center gap-2 mr-5  md:mr-4">
       <div class="relative">
         <div
           [style]="{'height': '0.7rem', 'width': '0.7rem'}"
@@ -68,7 +67,7 @@
     <li class="relative flex justify-content-center align-items-center gap-2">
       <div
         style="height: 2.4rem; width: 2.4rem;"
-        class="border-round surface-700 -mr-3 flex justify-content-center align-items-center"
+        class="border-round surface-700 -mr-5 md:-mr-3 flex justify-content-center align-items-center"
       >
         @if (user()!.photo !== '') {
         <img [src]="user()!.photo" class="border-round w-full" alt="Profile" />
@@ -91,21 +90,11 @@
       >
         <ng-template pTemplate="content">
           <span class="flex align-items-center font-bold">
-            <!-- @if (user()!.photo !== '') {
-            <img
-              [src]="user()!.photo"
-              class="border-round"
-              style="height: 1rem;"
-              alt="Profile"
-            />
-            } @else {
-            <div class="border-round h-2rem -ml-2 mr-2 w-2rem surface-200 flex align-items-center justify-content-center">
-              {{ usersService.getInitials(user()!.name) | uppercase }}
-            </div>
-            } -->
+            @if (!layoutService.isMobile()) {
             <span class="h-1rem w-7rem overflow-hidden text-overflow-ellipsis"
               >{{user()!.name}}</span
             >
+            }
           </span>
         </ng-template>
       </p-splitButton>

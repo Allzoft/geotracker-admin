@@ -15,6 +15,12 @@ import { MenuModule } from 'primeng/menu';
   imports: [CommonModule, ButtonModule, MenuModule, ConfirmDialogModule],
   providers: [ConfirmationService],
   templateUrl: './menu.component.html',
+  styles: `
+  .dot-card {
+     width: 2px;
+     height: 2px;
+   }
+ `
 })
 export class MenuComponent implements OnInit {
   public confirmationService = inject(ConfirmationService);

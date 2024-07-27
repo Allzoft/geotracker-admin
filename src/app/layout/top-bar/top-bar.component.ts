@@ -38,6 +38,7 @@ import { InputIconModule } from 'primeng/inputicon';
   ],
   providers: [ConfirmationService],
   templateUrl: './top-bar.component.html',
+
 })
 export class TopBarComponent {
   public layoutService = inject(LayoutService);
