@@ -97,7 +97,7 @@ export class TopBarComponent {
   public getTitle(): string {
     if(this.router.url.includes('dashboard')) return 'Dashboard'
     if(this.router.url.includes('users')) return 'Usuarios'
-    if(this.router.url.includes('users')) return 'Usuarios'
+    if(this.router.url.includes('roles')) return 'Roles'
     return '';
   }
 }

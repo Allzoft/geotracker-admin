@@ -15,6 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { MenuComponent } from './menu/menu.component';
 import { LayoutService } from '@services/layout.service';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @Component({
   standalone: true,
@@ -28,6 +29,7 @@ import { LayoutService } from '@services/layout.service';
     ToastModule,
     MessagesModule,
     TopBarComponent,
+    BreadcrumbComponent,
     MenuComponent,
   ],
   providers: [MessageService],

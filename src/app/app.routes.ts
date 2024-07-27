@@ -26,6 +26,29 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'users',
+            title: 'Lista de Usuarios',
+            loadComponent: () =>
+              import('./pages/admin/users/users.component'),
+          },
+          {
+            path: 'roles',
+            title: 'Roles de sistema',
+            loadComponent: () =>
+              import('./pages/admin/roles/roles.component'),
+          },
+
+          {
+            path: '',
+            redirectTo: 'admin',
+            pathMatch: 'full',
+          },
+        ],
+      },
 
       {
         path: '',

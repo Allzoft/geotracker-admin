@@ -25,11 +25,12 @@
     }"
   >
     <app-top-bar />
+    <app-breadcrumb />
     @if (layoutService.isMobile()) {
-    <div class="w-full h-4rem"></div>
+    <div class="w-full h-1rem"></div>
     }
     <div
-      class="pt-5 px-2"
+      class="md:pt-4 px-2"
       [ngClass]="!layoutService.state.staticMenuDesktopInactive  && !layoutService.isMobile() ? 'ml-2' : ''"
     >
       <router-outlet />
