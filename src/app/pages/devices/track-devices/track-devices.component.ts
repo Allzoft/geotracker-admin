@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, type OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LayoutService } from '@services/layout.service';
+import { CardEmptyListComponent } from '@shared/card-empty-list/card-empty-list.component';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -16,23 +17,25 @@ import { TableModule } from 'primeng/table';
     FormsModule,
     ButtonModule,
     OverlayPanelModule,
+    CardEmptyListComponent,
     DropdownModule,
     TableModule,
-    SkeletonModule
+    SkeletonModule,
   ],
   templateUrl: './track-devices.component.html',
 })
 export default class TrackDevicesComponent implements OnInit {
-  public layoutService = inject(LayoutService)
+  public layoutService = inject(LayoutService);
 
-  public filterOptions = ['Semanal', 'Mensual', 'Peronalizado']
-  public valueFilter = this.filterOptions.find((option)=>option === 'Semanal')
+  public filterOptions = ['Semanal', 'Mensual', 'Peronalizado'];
+  public valueFilter = this.filterOptions.find(
+    (option) => option === 'Semanal'
+  );
 
-  public skeletonTab = [1,2,3,4,5,6,7]
+  public skeletonTab = [1, 2, 3, 4, 5, 6, 7];
 
-  public devices = []
-  public loading = false
+  public devices = [];
+  public loading = false;
 
-  ngOnInit(): void { }
-
+  ngOnInit(): void {}
 }
