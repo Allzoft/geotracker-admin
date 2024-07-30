@@ -60,13 +60,13 @@
   </div>
   <p-overlayPanel #op>
     <div class="flex flex-column">
+      <div class="text-600 text-sm mb-2">Tipo de plantilla</div>
       <p-dropdown
         [options]="optionsTrackers"
         variant="filled"
         [(ngModel)]="valueTypeTracker"
         placeholder="Tipo de URL"
         styleClass="border-0 w-15rem"
-        (onChange)="changeFilter()"
       >
         <ng-template pTemplate="selectedItem">
           <div class="flex align-items-center gap-2" *ngIf="valueTypeTracker">
@@ -78,7 +78,7 @@
             <i class="pi pi-telegram text-blue-600"></i>
             } @if (valueTypeTracker.includes('Google')) {
             <i class="pi pi-google text-red-500"></i>
-            } @if (valueTypeTracker.includes('zoom')) {
+            } @if (valueTypeTracker.includes('Zoom')) {
             <i class="pi pi-video text-blue-500"></i>
             } @if (valueTypeTracker.includes('cercanas')) {
             <i class="pi pi-circle text-primary"></i>
@@ -96,7 +96,7 @@
             <i class="pi pi-telegram text-blue-600"></i>
             } @if (type.includes('Google')) {
             <i class="pi pi-google text-red-500"></i>
-            } @if (type.includes('zoom')) {
+            } @if (type.includes('Zoom')) {
             <i class="pi pi-video text-blue-500"></i>
             } @if (type.includes('cercanas')) {
             <i class="pi pi-circle text-primary"></i>
@@ -228,7 +228,7 @@
               <i class="pi pi-telegram text-blue-600"></i>
               } @if (tracker.type_url.includes('Google')) {
               <i class="pi pi-google text-red-500"></i>
-              } @if (tracker.type_url.includes('zoom')) {
+              } @if (tracker.type_url.includes('Zoom')) {
               <i class="pi pi-video text-blue-500"></i>
               } @if (tracker.type_url.includes('cercanas')) {
               <i class="pi pi-circle text-primary"></i>

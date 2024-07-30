@@ -101,7 +101,7 @@ export class BreadcrumbComponent {
         label: 'Rastreo de dispostivos',
         url: '/#/devices/track-devices',
       };
-      items.push(newItem0);
+      items.push(newItem0 );
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-info-circle',
         label: 'Detalle de rastreo',

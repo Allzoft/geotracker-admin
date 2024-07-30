@@ -7,11 +7,14 @@
       class="pi pi-map text-6xl top-0 mt-4 right-0 absolute mr-4 opacity-30"
     ></i>
     <div class="w-full flex">
-      <div class="col-3">
-        @if (tracker.state!.name === 'Rastreo exitoso') {
+      <div class="col-5 md:col-3">
+        @if (loading) {
+        <p-skeleton styleClass="w-full h-full" />
+        } @else { @if (tracker.state!.name === 'Rastreo exitoso') {
         <p-tag
+          severity="secondary"
           styleClass="text-xl w-full h-full"
-          icon="text-xl pi pi-check"
+          icon="text-xl pi pi-check text-primary-700"
           value="Rastreo exitoso"
         />
         } @if (tracker.state!.name === 'En curso') {
@@ -28,10 +31,14 @@
           icon="text-xl pi pi-spin pi-spinner"
           value="Rastreo fallido"
         />
-        }
+        } }
       </div>
-      <div class="col-6">
+      <div class="col-7 md:col-6">
         <div class="px-3 py-2 flex flex-column gap-3">
+          @if (loading) {
+          <p-skeleton height="1.4rem" styleClass="w-8rem" />
+          <p-skeleton height="1.2rem" styleClass="w-9rem" />
+          } @else {
           <div class="text-lg">{{ tracker.device?.name }}</div>
           <div class="text-primary">
             @if (tracker.type_url.includes('facebook')) {
@@ -48,85 +55,312 @@
             <i class="pi mr-1 pi-circle text-primary"></i>
             } {{ tracker.type_url }}
           </div>
+          }
         </div>
       </div>
       <div class="col-3"></div>
     </div>
-
-    @if(tracker.state!.name === 'Rastreo exitoso') {
+    @if (loading) {
     <section class="w-full grid m-0 p-0">
       <div class="col-4 px-2">
+        <p-skeleton styleClass="w-full h-4rem" />
+      </div>
+      <div class="col-4 px-2">
+        <p-skeleton styleClass="w-full h-4rem" />
+      </div>
+      <div class="col-4 px-2">
+        <p-skeleton styleClass="w-full h-4rem" />
+      </div>
+    </section>
+
+    } @else { @if(tracker.state!.name === 'Rastreo exitoso') {
+    <section class="w-full grid m-0 p-0">
+      <div class="col-12 md:col-4 px-2">
         <div
           style="background-color: #2aab7933;"
-          class="w-full relative py-4 px-2 md:px-4 transition-colors transition-duration-300 hover:surface-50 hover:shadow-4 border-300 shadow-2 border-round flex gap-2"
+          class="w-full relative py-4 px-4 transition-colors transition-duration-300 hover:surface-50 hover:shadow-4 border-300 shadow-2 border-round flex gap-2"
         >
           <i class="pi pi-bullseye text-600 text-5xl"></i>
           <div class="flex flex-column gap-2">
             <div class="text-400 text-xs">Precisión</div>
-            <div class="">
-              {{ '4315.2 m' }}
+            <div class="text-sm">
+              {{ tracker.accuracy }}
             </div>
           </div>
         </div>
       </div>
-      <div class="col-4 px-2">
+      <div class="col-12 md:col-4 px-2">
         <div
           style="background-color: #2aab7933;"
-          class="w-full relative py-4 px-2 md:px-4 transition-colors transition-duration-300 hover:surface-50 hover:shadow-4 border-300 shadow-2 border-round flex gap-2"
+          class="w-full relative py-4 px-4 transition-colors transition-duration-300 hover:surface-50 hover:shadow-4 border-300 shadow-2 border-round flex gap-2"
         >
           <i class="pi pi-calendar text-600 text-5xl"></i>
           <div class="flex flex-column gap-2">
             <div class="text-400 text-xs">Fecha</div>
-            <div class="">
-              {{ tracker.created_at | date: 'dd/MM/yy hh:mm a' }}
+            <div class="text-sm">
+              {{ tracker.tracker_date | date: 'dd/MM/yy hh:mm a' }}
             </div>
           </div>
         </div>
       </div>
-      <div class="col-4 px-2">
+      <div class="col-12 md:col-4 px-2">
         <div
           style="background-color: #2aab7933;"
-          class="cursor-pointer w-full relative py-4 px-2 md:px-4 transition-colors transition-duration-300 hover:surface-50 hover:shadow-4 border-300 shadow-2 border-round flex gap-2 align-items-center"
+          (click)="goGMaps()"
+          class="cursor-pointer w-full relative py-4 px-4 transition-colors transition-duration-300 hover:surface-50 hover:shadow-4 border-300 shadow-2 border-round flex gap-2 align-items-center"
         >
           <i class="pi pi-map-marker text-600 text-5xl"></i>
           <div class="flex flex-column gap-2">
             <div class="text-400 text-xs">Ubicación</div>
-            <div class="">Ciudad de Oruro, Bolivia</div>
+            <div class="text-sm white-space-nowrap">
+              {{ tracker.city + ', ' + tracker.country }}
+            </div>
           </div>
           <i class="pi pi-arrow-right text-2xl ml-2"></i>
         </div>
       </div>
     </section>
-    }
+    }}
   </div>
 </section>
 
-@if (tracker.state!.name === 'En curso') {
-
+@if (loading) {
+<div class="w-full flex justify-content-center">
+  <img
+    src="../../../../../assets/incurse.svg"
+    alt="incurse"
+    class="w-10 md:w-3 mt-7"
+  />
+</div>
+} @else { @if (tracker.state!.name === 'Rastreo exitoso') {
 <section class="w-full grid m-0 mt-4 p-0">
   <div
     style="background-color: #18181b; border-color: #18181b; min-height: 30rem;"
     class="overflow-hidden relative w-full mb-3 flex flex-column gap-2 border-round flex px-3 border-1 justify-content-between"
   >
+    <div class="w-full flex flex-column gap-3 py-3 px-2 md:p-3">
+      <div class="flex flex-column md:flex-row gap-4 w-full">
+        <div
+          class="flex flex-column md:flex-row gap-4 justify-content-center w-full text-xl font-semibold"
+        >
+          <div class="flex-column col-12 md:col-4 px-2 md:px-4 gap-4 flex mt-2">
+            <div class="flex gap-2 align-items-center text-xl font-semibold">
+              <i class="pi pi-desktop text-primary text-2xl mr-2"></i>
+              <div>
+                Información del disp:
+              </div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Sistema Operativo:</div>
+              <div class="">{{ tracker.os }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Plataforma:</div>
+              <div class="">{{ tracker.platform }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Núcleos de CPU:</div>
+              <div class="">{{ tracker.cpuCores }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">RAM:</div>
+              <div class="">{{ tracker.ram }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Proveedor GPU:</div>
+              <div class="">{{ tracker.gpuVendor }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">GPU:</div>
+              <div class="">{{ tracker.gpu }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Resolución de pantalla:</div>
+              <div class="">{{ tracker.resolution }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Navegador:</div>
+              <div class="">{{ tracker.browser }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">IP Pública:</div>
+              <div class="">{{ tracker.publicIp }}</div>
+            </div>
+          </div>
+          <div class="flex-column col-12 md:col-4 px-2 md:px-4 gap-4 flex mt-2">
+            <div class="flex gap-2 align-items-center text-xl font-semibold">
+              <i class="pi pi-wifi text-primary text-2xl mr-2"></i>
+              <div>
+                Información de IP:
+              </div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Continente:</div>
+              <div class="">{{ tracker.continent }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">País:</div>
+              <div class="">{{ tracker.country }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Región:</div>
+              <div class="">{{ tracker.region }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Ciudad:</div>
+              <div class="">{{ tracker.city }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Organización:</div>
+              <div class="">{{ tracker.org }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">ISP:</div>
+              <div class="">{{ tracker.isp }}</div>
+            </div>
+          </div>
+          <div class="flex-column col-12 md:col-4 px-2 md:px-4 gap-4 flex mt-2">
+            <div class="flex gap-2 align-items-center text-xl font-semibold">
+              <i class="pi pi-map-marker text-primary text-2xl mr-2"></i>
+              <div>
+                Información de ubicación:
+              </div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Latitud:</div>
+              <div class="">{{ tracker.latitude }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Longitud:</div>
+              <div class="">{{ tracker.longitude }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Precisión:</div>
+              <div class="">{{ tracker.accuracy }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Altitud:</div>
+              <div class="">{{ tracker.altitude }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Dirección:</div>
+              <div class="">{{ tracker.direction }}</div>
+            </div>
+            <div
+              class="flex gap-2 align-items-center ml-2 text-base font-normal"
+            >
+              <div class="text-600">Velocidad:</div>
+              <div class="">{{ tracker.speed }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+} @if (tracker.state!.name === 'En curso') {
+<section class="w-full grid m-0 mt-4 p-0">
+  <div
+    style="background-color: #18181b; border-color: #18181b; min-height: 30rem;"
+    class="overflow-hidden relative w-full mb-3 flex flex-column gap-2 border-round flex px-3 border-1 justify-content-between"
+  >
+    @if (!layoutService.isMobile()) {
     <img
       src="../../../../../assets/incurse.svg"
       alt="incurse"
-      class="absolute top-0 right-0 w-4 mt-3 mr-7"
+      class="absolute top-0 right-0 w-4 mt-4 mr-7"
     />
-    <div class="w-full flex flex-column gap-3 p-3">
-      <div class="flex gap-6 align-items-center">
-        <div class="text-xl font-semibold"><i class="pi pi-info-circle text-primary text-2xl mr-2"></i> Detalles del proceso</div>
-        <p-button
-          label="Iniciar conexión"
-          styleClass="bg-orange-500 border-0 text-white "
-        ></p-button>
-        <p-button
-          label="Conseguir URL"
-          [disabled]="true"
-          styleClass="bg-primary-700 border-0 text-white "
-        ></p-button>
+    }
+    <div class="w-full flex flex-column gap-3 py-3 px-2 md:p-3">
+      <div class="flex flex-column md:flex-row gap-4 w-full">
+        <div class="flex flex-row md:flex-column gap-4 text-xl font-semibold">
+          <div class="flex gap-2 align-items-center mt-2 text-xl font-semibold">
+            <i class="pi pi-info-circle text-primary text-2xl mr-2"></i>
+            <div>
+              Detalles del proceso
+            </div>
+          </div>
+          <div
+            class="surface-50 px-3 py-2 w-17rem text-left text-xs md:text-justify border-round flex align-items-center justify-content-center md:text-sm"
+          >
+            Una vez iniciada la conexión. es importante no cerrar la pestaña
+          </div>
+        </div>
+        <div
+          class="flex gap-4 w-full justify-content-between md:justify-content-start"
+        >
+          <p-button
+            label="Iniciar conexión"
+            severity="warning"
+            [disabled]="!messages[1] || blockInit()"
+            styleClass="bg-orange-500 border-0 text-white w-full"
+            (onClick)="initConecction()"
+          ></p-button>
+          <p-button
+            label="Conseguir URL"
+            [disabled]="true"
+            styleClass="bg-primary-700 border-0 text-white w-full"
+            [disabled]="!hasRunTracker() || blockInit()"
+            (onClick)="getLink()"
+          ></p-button>
+          <p-button
+            label="Cerrar conexión"
+            severity="danger"
+            [disabled]="true"
+            styleClass="bg-red-500 border-0 text-white w-full"
+            [disabled]="!messages[1] || blockInit()"
+            (onClick)="closeSession()"
+          ></p-button>
+        </div>
       </div>
-
+      <p-messages
+        #mssg
+        [(value)]="messages"
+        [enableService]="true"
+        [closable]="false"
+        styleClass="w-12 md:w-8"
+      />
     </div>
   </div>
 </section>
@@ -135,4 +369,6 @@
 <div class="w-full flex justify-content-center">
   <img src="../../../../../assets/failed.svg" alt="incurse" class="w-4 mt-7" />
 </div>
-}
+} }
+
+<p-toast position="top-center" key="toast"></p-toast>

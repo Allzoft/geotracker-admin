@@ -10,7 +10,7 @@ export enum TypeURLTracker {
   GRUPO_DE_WHATSAPP_FALSO = 'Grupo de whatsapp falso',
   GRUPO_DE_WHATSAPP_REAL = 'Grupo de whatsapp real',
   GRUPO_DE_TELEGRAM = 'Grupo de telegram',
-  ZOOM = 'zoom',
+  ZOOM = 'Zoom',
   GOOGLE_RECAPTCHA = 'Google recaptcha',
 }
 
@@ -33,11 +33,12 @@ export interface Tracker {
   created_by_user: number;
   region: string;
   city: string;
+  tracker_date: Date;
   org: string;
   isp: string;
-  latitude: number;
-  longitude: number;
-  accuracy: number;
+  latitude: string;
+  longitude: string;
+  accuracy: string;
   altitude: string;
   direction: string;
   speed: string;

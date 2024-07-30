@@ -15,6 +15,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './services/interceptors/auth.interceptor';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+
+
+const config: SocketIoConfig = { url: 'ws://159.223.196.162:4000/ws', options: {} };
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +34,7 @@ export const appConfig: ApplicationConfig = {
       BrowserModule,
       RouterModule,
       BrowserAnimationsModule,
+      SocketIoModule.forRoot(config)
     ),
     provideHttpClient(withInterceptors([authInterceptor])),
   ],
