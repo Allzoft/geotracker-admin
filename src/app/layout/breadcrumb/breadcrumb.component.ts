@@ -98,7 +98,7 @@ export class BreadcrumbComponent {
     if (words[1] === 'track-details') {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-info-circle',
-        label: 'Detalle de rastro',
+        label: 'Detalle de rastreo',
         url: '/#/devices/devices-list',
       };
       items.push(newItem);
