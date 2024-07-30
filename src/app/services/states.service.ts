@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
-import { State } from '@interfaces/tracker';
+import { State, TypeState } from '@interfaces/tracker';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 
@@ -81,7 +81,7 @@ export class StatesService {
     );
   }
 
-  public getStatesByTpe(type: string): Observable<State[]> {
+  public getStatesByTpe(type: TypeState): Observable<State[]> {
     return this.http.get<State[]>(
       `${environment.url_api}/states/bytype/${type}`
     );

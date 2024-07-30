@@ -1,33 +1,7 @@
 <section class="w-full grid m-0 p-0">
   <div class="col-12 md:col-9 px-3">
-    <p-overlayPanel #op>
-      <div class="flex gap-2 flex-column align-items-center w-full">
-        <div class="flex gap-1">
-          <div class="text-xs text-700">Seleccionados</div>
-          <div class="text-sm md:text-base text-center">{{ 2 }}</div>
-        </div>
-        <p-button
-          severity="contrast"
-          label="Activar"
-          [outlined]="true"
-          icon="pi pi-check-square"
-          styleClass="surface-50 border-0 w-8rem "
-        />
-        <p-button
-          severity="warning"
-          label="Editar"
-          styleClass="bg-orange-500 border-0 text-white w-8rem"
-        />
-        <p-button
-          severity="danger"
-          label="Eliminar"
-          styleClass="bg-red-600 border-0 text-white w-8rem"
-        />
-      </div>
-    </p-overlayPanel>
     <div
       style="background-color: #18181b; border-color: #18181b;"
-      (click)="layoutService.isMobile() ? op.toggle($event) : ''"
       class="w-full h-4rem border-round flex px-3 border-1"
       [ngClass]="layoutService.isMobile() ? 'cursor-pointer hover:surface-50' : ''"
     >
@@ -39,17 +13,17 @@
       </div>
       }
       <div class="flex gap-2 w-full align-items-center">
-        <i class="pi pi-mobile px-2 text-2xl"></i>
+        <i class="pi pi-map-marker px-2 text-2xl"></i>
         <div class="flex flex-column gap-1">
           <div class="text-xs text-400">Rastreados</div>
-          <div class="text-sm md:text-base">{{ 725 }} disp.</div>
+          <div class="text-sm md:text-base">{{ trackers().length }} disp.</div>
         </div>
       </div>
       <div class="flex gap-2 w-full align-items-center">
-        <i class="pi pi-map px-2 text-2xl"></i>
+        <i class="pi pi-check-circle text-primary-600 px-2 text-2xl"></i>
         <div class="flex flex-column gap-1">
           <div class="text-xs text-400">Exitosos</div>
-          <div class="text-sm md:text-base">{{ 650 }} disp.</div>
+          <div class="text-sm md:text-base">{{ getTracksSuccess() }} disp.</div>
         </div>
       </div>
       @if (!layoutService.isMobile()) {
@@ -59,34 +33,102 @@
           variant="filled"
           [(ngModel)]="valueFilter"
           styleClass="border-0 w-full"
+          (onChange)="changeFilter()"
         ></p-dropdown>
       </div>
       }
     </div>
   </div>
   @if (layoutService.isMobile()) {
-    <div class="col-6 px-3">
-      <p-dropdown
-        [options]="filterOptions"
-        variant="filled"
-        [(ngModel)]="valueFilter"
-        styleClass="border-0 w-full"
-      ></p-dropdown>
-    </div>
-    }
+  <div class="col-6 px-3">
+    <p-dropdown
+      [options]="filterOptions"
+      variant="filled"
+      [(ngModel)]="valueFilter"
+      styleClass="border-0 w-full"
+      (onChange)="changeFilter()"
+    ></p-dropdown>
+  </div>
+  }
   <div class="col-6 md:col-3 px-3">
     <p-button
       styleClass="w-full md:h-4rem text-white font-semibold bg-primary-700 border-0"
       [label]="layoutService.isMobile() ? 'Agregar' : '+ Agregar Rastreo'"
       [icon]="layoutService.isMobile() ? 'text-white pi pi-plus' : ''"
+      (onClick)="op.toggle($event)"
     ></p-button>
   </div>
+  <p-overlayPanel #op>
+    <div class="flex flex-column">
+      <p-dropdown
+        [options]="optionsTrackers"
+        variant="filled"
+        [(ngModel)]="valueTypeTracker"
+        placeholder="Tipo de URL"
+        styleClass="border-0 w-15rem"
+        (onChange)="changeFilter()"
+      >
+        <ng-template pTemplate="selectedItem">
+          <div class="flex align-items-center gap-2" *ngIf="valueTypeTracker">
+            @if (valueTypeTracker.includes('facebook')) {
+            <i class="pi pi-facebook text-blue-500"></i>
+            } @if (valueTypeTracker.includes('whatsapp')) {
+            <i class="pi pi-whatsapp text-green-500"></i>
+            } @if (valueTypeTracker.includes('telegram')) {
+            <i class="pi pi-telegram text-blue-600"></i>
+            } @if (valueTypeTracker.includes('Google')) {
+            <i class="pi pi-google text-red-500"></i>
+            } @if (valueTypeTracker.includes('zoom')) {
+            <i class="pi pi-video text-blue-500"></i>
+            } @if (valueTypeTracker.includes('cercanas')) {
+            <i class="pi pi-circle text-primary"></i>
+            }
+            <div>{{ valueTypeTracker }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-type pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            @if (type.includes('facebook')) {
+            <i class="pi pi-facebook text-blue-500"></i>
+            } @if (type.includes('whatsapp')) {
+            <i class="pi pi-whatsapp text-green-500"></i>
+            } @if (type.includes('telegram')) {
+            <i class="pi pi-telegram text-blue-600"></i>
+            } @if (type.includes('Google')) {
+            <i class="pi pi-google text-red-500"></i>
+            } @if (type.includes('zoom')) {
+            <i class="pi pi-video text-blue-500"></i>
+            } @if (type.includes('cercanas')) {
+            <i class="pi pi-circle text-primary"></i>
+            }
+            <div>{{ type }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <p-dropdown
+        [options]="devices()"
+        variant="filled"
+        [(ngModel)]="selectedDevice"
+        optionLabel="name"
+        styleClass="border-0 mt-3 w-15rem"
+        [filter]="true"
+        placeholder="Identificador de disp."
+        filterBy="name"
+        [loading]="loadingDevices()"
+      />
+      <p-button
+        (onClick)="saveTracker()"
+        styleClass="text-white border-0 w-15rem mt-3 bg-primary-600"
+        label="Crear"
+      />
+    </div>
+  </p-overlayPanel>
 </section>
 
 <div class="px-3">
   <div class="w-full border-300 border-round mt-4 overflow-hidden">
     <p-table
-      [value]="devices"
+      [value]="trackers()"
       styleClass="p-datatable-sm p-datatable-striped "
       [paginator]="true"
       [rows]="10"
@@ -95,37 +137,36 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th class="pl-5 surface-50 border-round"></th>
+          <th class="pl-5 surface-50 border-round-left"></th>
           <th
-            pSortableColumn="name"
+            pSortableColumn="device.name"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Nombre <p-sortIcon class="ml-8" field="name" />
+            Identificador <p-sortIcon class="ml-8" field="device.name" />
           </th>
           <th
-            pSortableColumn="email"
+            pSortableColumn="state.priority"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Rol <p-sortIcon class="ml-8" field="email" />
+            Estado <p-sortIcon class="ml-8" field="state.priority" />
           </th>
-
           <th
-            pSortableColumn="phone"
+            pSortableColumn="state.priority"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Celular <p-sortIcon class="ml-8" field="phone" />
+            Tipo de link <p-sortIcon class="ml-8" field="state.priority" />
           </th>
           <th
             pSortableColumn="createAt"
             class="white-space-nowrap surface-50 h-3rem"
           >
-            Fecha de registro <p-sortIcon class="ml-8" field="createAt" />
+            Fecha de creación <p-sortIcon class="ml-8" field="createAt" />
           </th>
-          <th class="surface-50 border-round"></th>
+          <th class="surface-50 border-round-right"></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-user>
-        @if (loading) { @for (skeleton of skeletonTab; track $index) {
+      <ng-template pTemplate="body" let-tracker>
+        @if (loading()) { @for (skeleton of skeletonTab; track $index) {
         <tr>
           <td class="pl-3 flex gap-2 align-items-center">
             <p-skeleton size="2rem" shape="circle"></p-skeleton>
@@ -148,35 +189,64 @@
         </tr>
         } } @else {
         <tr>
-          <td class="pl-5">
-
-          </td>
+          <td class="pl-5"></td>
           <td class="">
             <div class="flex gap-2 align-items-center">
-
-              <span>{{ user.name }} </span>
+              <span>{{ tracker.device.name }} </span>
             </div>
           </td>
           <td>
             <div class="flex align-items-center">
-              <span>{{ user.role.name }} </span>
+              @if(tracker.state.name === 'En curso'){
+              <p-tag
+                severity="secondary"
+                [value]="tracker.state.name"
+                icon="pi pi-spin pi-spinner"
+              />
+              } @if(tracker.state.name === 'Rastreo fallido'){
+              <p-tag
+                severity="danger"
+                [value]="tracker.state.name"
+                icon="pi pi-times"
+              />
+              } @if(tracker.state.name === 'Rastreo exitoso'){
+              <p-tag
+                severity="success"
+                [value]="tracker.state.name"
+                icon="pi pi-check"
+              />
+              }
             </div>
           </td>
           <td>
-            <div class="flex align-items-center">
-              <span>{{ user.phone }} </span>
+            <div class="flex gap-2 align-items-center">
+              @if (tracker.type_url.includes('facebook')) {
+              <i class="pi pi-facebook text-blue-500"></i>
+              } @if (tracker.type_url.includes('whatsapp')) {
+              <i class="pi pi-whatsapp text-green-500"></i>
+              } @if (tracker.type_url.includes('telegram')) {
+              <i class="pi pi-telegram text-blue-600"></i>
+              } @if (tracker.type_url.includes('Google')) {
+              <i class="pi pi-google text-red-500"></i>
+              } @if (tracker.type_url.includes('zoom')) {
+              <i class="pi pi-video text-blue-500"></i>
+              } @if (tracker.type_url.includes('cercanas')) {
+              <i class="pi pi-circle text-primary"></i>
+              }
+              <span>{{ tracker.type_url }} </span>
             </div>
           </td>
-          <td>{{ user.created_at.split('T')[0] }}</td>
+          <td>{{ tracker.created_at | date: 'dd/MM/yy hh:mm a' }}</td>
           <td class="white-space-nowrap">
             <p-button
               severity="secondary"
-              icon="pi pi-pencil"
+              icon="pi pi-eye"
               [rounded]="true"
               [text]="true"
               styleClass="h-2rem w-2rem ml-2"
             ></p-button>
             <p-button
+              (onClick)="deleteTracker(tracker)"
               icon="pi pi-trash"
               severity="secondary"
               [rounded]="true"
@@ -197,3 +267,6 @@
     </p-table>
   </div>
 </div>
+
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog styleClass="w-auto md:w-5" position="bottom"></p-confirmDialog>

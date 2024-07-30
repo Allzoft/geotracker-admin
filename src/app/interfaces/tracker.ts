@@ -3,10 +3,22 @@ import { User } from './user';
 export enum TypeState {
   RASTREO = 'Rastreo',
 }
+
+export enum TypeURLTracker {
+  PERSONAS_CERCANAS = 'Personas cercanas',
+  GOOGLE_DRIVE = 'Google drive',
+  GRUPO_DE_WHATSAPP_FALSO = 'Grupo de whatsapp falso',
+  GRUPO_DE_WHATSAPP_REAL = 'Grupo de whatsapp real',
+  GRUPO_DE_TELEGRAM = 'Grupo de telegram',
+  ZOOM = 'zoom',
+  GOOGLE_RECAPTCHA = 'Google recaptcha',
+}
+
 export interface Tracker {
   id_tracker: number;
   stateIdState: number;
   deviceIdDevice: number;
+  type_url: TypeURLTracker;
   os: string;
   platform: string;
   cpuCores: number;
@@ -32,6 +44,7 @@ export interface Tracker {
   device?: Device;
   status?: number;
   user?: User;
+  state?: State;
   created_at?: Date;
   updated_at?: Date;
 }

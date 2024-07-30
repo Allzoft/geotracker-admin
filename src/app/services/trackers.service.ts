@@ -58,6 +58,8 @@ export class TrackersService {
             loading: false,
             trackers: res,
           });
+          console.log(res);
+
           localStorage.setItem(
             'trackers',
             JSON.stringify(this.#state().trackers)
