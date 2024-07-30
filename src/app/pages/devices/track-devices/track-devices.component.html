@@ -239,6 +239,7 @@
           <td>{{ tracker.created_at | date: 'dd/MM/yy hh:mm a' }}</td>
           <td class="white-space-nowrap">
             <p-button
+              (onClick)="router.navigateByUrl('devices/track-details/' + tracker.id_tracker)"
               severity="secondary"
               icon="pi pi-eye"
               [rounded]="true"

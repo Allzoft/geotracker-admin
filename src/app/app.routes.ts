@@ -42,6 +42,12 @@ export const routes: Routes = [
               import('./pages/devices/track-devices/track-devices.component'),
           },
           {
+            path: 'track-details/:id',
+            title: 'Detalles de rastreo',
+            loadComponent: () =>
+              import('./pages/devices/track-devices/track-details/track-details.component'),
+          },
+          {
             path: 'devices-list',
             title: 'Lista de dispositivos',
             loadComponent: () =>

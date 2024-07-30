@@ -17,7 +17,7 @@ export class BreadcrumbComponent {
   public layoutService = inject(LayoutService);
   public router = inject(Router);
 
-  public home: MenuItem = { icon: 'pi pi-home', url: 'dashboard' };
+  public home: MenuItem = { icon: 'pi pi-home', url: '/#/dashboard' };
 
   public items = this.usersService.access();
 
@@ -43,6 +43,7 @@ export class BreadcrumbComponent {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-mobile',
         label: 'Dispositivos',
+        url: '/#/devices/devices-list  '
       };
       items.push(newItem);
     }
@@ -50,14 +51,14 @@ export class BreadcrumbComponent {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-users',
         label: 'Usuarios',
-        url: 'admin/users',
+        url: '/#/admin/users',
       };
       items.push(newItem);
     } else if (words[1] === 'roles') {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-check',
         label: 'Roles',
-        url: 'admin/roles',
+        url: '/#/admin/roles',
       };
       items.push(newItem);
     }
@@ -65,7 +66,7 @@ export class BreadcrumbComponent {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-table',
         label: 'Dashboard',
-        url: 'admin/users',
+        url: '/#/admin/users',
       };
       items.push(newItem);
     }
@@ -73,14 +74,14 @@ export class BreadcrumbComponent {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-map-marker',
         label: 'Rastreo de dispostivos',
-        url: 'devices/track-devices',
+        url: '/#/devices/track-devices',
       };
       items.push(newItem);
     } else if (words[1] === 'recovery-data') {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-cloud-download',
         label: 'Recuperación de archivos',
-        url: 'devices/recovery-data',
+        url: '/#/devices/recovery-data',
       };
       items.push(newItem);
     }
@@ -89,7 +90,16 @@ export class BreadcrumbComponent {
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-desktop',
         label: 'Listado de dispostivos',
-        url: 'devices/devices-list',
+        url: '/#/devices/devices-list',
+      };
+      items.push(newItem);
+    }
+
+    if (words[1] === 'track-details') {
+      const newItem: MenuItem = {
+        icon: 'pi mr-2 pi-info-circle',
+        label: 'Detalle de rastro',
+        url: '/#/devices/devices-list',
       };
       items.push(newItem);
     }

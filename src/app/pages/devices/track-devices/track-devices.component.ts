@@ -17,6 +17,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-track-devices',
@@ -44,6 +45,8 @@ export default class TrackDevicesComponent implements OnInit {
   public layoutService = inject(LayoutService);
   public trackersService = inject(TrackersService);
   public devicesService = inject(DevicesService);
+
+  public router = inject(Router)
 
   optionsTrackers: TypeURLTracker[] = [
     TypeURLTracker.PERSONAS_CERCANAS,
