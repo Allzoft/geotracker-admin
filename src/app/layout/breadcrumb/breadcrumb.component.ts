@@ -96,6 +96,12 @@ export class BreadcrumbComponent {
     }
 
     if (words[1] === 'track-details') {
+      const newItem0: MenuItem = {
+        icon: 'pi mr-2 pi-map-marker',
+        label: 'Rastreo de dispostivos',
+        url: '/#/devices/track-devices',
+      };
+      items.push(newItem0);
       const newItem: MenuItem = {
         icon: 'pi mr-2 pi-info-circle',
         label: 'Detalle de rastreo',
