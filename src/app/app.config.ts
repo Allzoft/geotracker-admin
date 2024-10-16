@@ -18,7 +18,7 @@ import { authInterceptor } from './services/interceptors/auth.interceptor';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 
-const config: SocketIoConfig = { url: 'ws://159.223.196.162:4000/ws', options: {} };
+const config: SocketIoConfig = { url: 'wss://api-geotracker.v-max.site/ws', options: {} };
 
 export const appConfig: ApplicationConfig = {
   providers: [

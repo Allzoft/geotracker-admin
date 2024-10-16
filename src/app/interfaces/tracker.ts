@@ -10,7 +10,7 @@ export enum TypeURLTracker {
   GRUPO_DE_WHATSAPP_FALSO = 'Grupo de whatsapp falso',
   GRUPO_DE_WHATSAPP_REAL = 'Grupo de whatsapp real',
   GRUPO_DE_TELEGRAM = 'Grupo de telegram',
-  ZOOM = 'Zoom',
+  ZOOM = 'Z oom',
   GOOGLE_RECAPTCHA = 'Google recaptcha',
 }
 

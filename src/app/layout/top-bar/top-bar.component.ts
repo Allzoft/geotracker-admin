@@ -9,7 +9,7 @@ import {
 } from '@angular/router';
 import { User } from '@interfaces/user';
 import { UsersService } from '@services/users.service';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,6 +20,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { BadgeModule } from 'primeng/badge';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-top-bar',
@@ -35,12 +36,14 @@ import { InputIconModule } from 'primeng/inputicon';
     InputIconModule,
     IconFieldModule,
     DropdownModule,
+    ToastModule,
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './top-bar.component.html',
 
 })
 export class TopBarComponent {
+  private messageService = inject(MessageService)
   public layoutService = inject(LayoutService);
   public usersService = inject(UsersService);
   private confirmationService = inject(ConfirmationService);
@@ -77,6 +80,15 @@ export class TopBarComponent {
 
   public onProfileButtonClick() {
     this.router.navigateByUrl('/admin/user/' + this.user()!.id_user);
+  }
+
+  public showDisableButton(){
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Módulo en construcción',
+      icon: 'pi pi-wrench',
+      detail: 'Este módulo se habilitará proximamente'
+    });
   }
 
   public closeSession() {

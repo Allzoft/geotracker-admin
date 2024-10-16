@@ -24,7 +24,11 @@
         <p-inputIcon styleClass="pi pi-search " />
         <input type="text" pInputText placeholder="Buscar aqui" />
       </p-iconField>
-      <p-button icon="pi pi-cog text-white " styleClass="bg-primary-700 border-0" />
+      <p-button
+        icon="pi pi-cog text-white "
+        (onClick)="showDisableButton()"
+        styleClass="bg-primary-700 border-0"
+      />
       }
     </li>
     <li class="flex align-items-center gap-2 mr-5 md:mr-4">
@@ -36,6 +40,7 @@
         <p-button
           icon="pi pi-bell"
           [outlined]="true"
+          (onClick)="showDisableButton()"
           styleClass="surface-50 border-0"
         />
       </div>
@@ -46,6 +51,7 @@
         ></div> -->
         <p-button
           icon="pi pi-comments"
+          (onClick)="showDisableButton()"
           [outlined]="true"
           styleClass="surface-50 border-0"
         />
@@ -58,6 +64,7 @@
         <p-button
           icon="pi pi-map"
           severity="contrast"
+          (onClick)="showDisableButton()"
           [outlined]="true"
           styleClass="surface-50 border-0"
         />
@@ -102,3 +109,4 @@
   </ul>
 </section>
 <p-confirmDialog styleClass="w-auto md:w-5" position="bottom"></p-confirmDialog>
+<p-toast position="top-center"></p-toast>

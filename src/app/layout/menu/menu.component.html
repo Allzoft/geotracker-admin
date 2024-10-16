@@ -1,7 +1,7 @@
 <div
-  class="w-screen md:w-full  h-screen flex flex-column transition-ease-in-out transition-duration-500 align-items-center z-2 overflow-auto"
+  class="w-screen md:w-full h-screen overflow-hidden flex flex-column transition-ease-in-out transition-duration-500 align-items-center z-2 overflow-auto"
 >
-  <div class="w-9  md:w-full px-4 py-4 md:py-2 my-4">
+  <div class="w-9 md:w-full px-4 py-4 md:py-2 my-4">
     <div class="relative">
       <img
         src="../../../assets/name_company.png"
@@ -26,8 +26,41 @@
     ></p-button>
     }
   </div>
-  <div class="w-full surface-200">
-    <p-menu [model]="model" styleClass="w-full"></p-menu>
+  <div class="w-full flex flex-column gap-2">
+    <div class="text-400 font-semibold text-xl" style="padding-left: 1.35rem;">
+      Menú Principal
+    </div>
+    <!-- <p-menu [model]="model" styleClass="w-full"></p-menu> -->
+
+    <div class="w-full flex flex-column mt-3">
+      @for (item of items; track $index) {
+      <a
+        [href]="'#/' + item.father + item.link"
+        (click)="navigateTo(item.father + item.link); $event.preventDefault()"
+        class="cursor-pointer relative no-underline w-full flex gap-3 py-3 hover:surface-200"
+        style="padding-left: 1.35rem;"
+      >
+        @if (isOnModule(item.father + item.link)) {
+        <i [class]="'text-800 pi pi-' + item.icon"></i>
+        <div class="text-sm text-800">{{ item.name }}</div>
+        <div
+          style="margin-right: -1.7rem;"
+          class="absolute right-0 bg-primary-600 w-2rem h-full top-0 border-round-left"
+        ></div>
+        <div
+          class="absolute right-0 w-12 h-full top-0"
+          style="
+            background: linear-gradient(to left, #34d399, #18181b);
+            opacity: 0.1;
+          "
+        ></div>
+        } @else {
+        <i [class]="'text-400 pi pi-' + item.icon"></i>
+        <div class="text-400 text-sm">{{ item.name }}</div>
+        }
+      </a>
+      }
+    </div>
   </div>
   <div
     class="relative w-8 md:w-11 mt-6 md:mt-4 border-round overflow-hidden bg-primary-700 h-8rem flex flex-column gap-2 pl-4 pt-3"
@@ -37,12 +70,12 @@
       <br />
       informe ya!
     </div>
-    <p-button
+    <!-- <p-button
       icon="pi pi-arrow-right"
       severity="contrast"
       [text]="true"
       styleClass="bg-white-alpha-40 "
-    />
+    /> -->
     <div
       class="absolute bottom-0 right-0 w-7rem h-7rem -mb-5 -mr-5 bg-white opacity-30 border-circle"
     ></div>
@@ -73,6 +106,9 @@
       </div>
     </div>
   </div>
-  <div class="text-xs text-center px-2 mt-6 md:mt-4">&copy; 2024 GeoTracker. Todos los derechos reservados.</div>
+  <div class="text-xs text-center px-2 mt-6 md:mt-4 mb-2">
+    &copy; 2024 GeoTracker. Todos los derechos reservados.
+  </div>
 </div>
+<p-toast position="top-center"></p-toast>
 <p-confirmDialog styleClass="w-auto md:w-5" position="bottom"></p-confirmDialog>

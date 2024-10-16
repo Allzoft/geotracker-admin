@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class TrackersSocket extends Socket {
   constructor() {
-    super({ url: 'ws://159.223.196.162:4000/ws', options: {} });
+    super({ url: 'wss://api-geotracker.v-max.site/ws', options: {} });
     this.setupSocketListeners();
   }
 

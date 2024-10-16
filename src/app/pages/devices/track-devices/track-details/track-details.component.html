@@ -353,6 +353,15 @@
             (onClick)="closeSession()"
           ></p-button>
         </div>
+        <div class="w-full">
+          <p-button
+            label="Copiar link al portapeles"
+            severity="secondary"
+            [disabled]="!link"
+            styleClass="surface-200 border-0 text-white w-full"
+            (onClick)="copyToClipboard()"
+          ></p-button>
+        </div>
       </div>
       <p-messages
         #mssg

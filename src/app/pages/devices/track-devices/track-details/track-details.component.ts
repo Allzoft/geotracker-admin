@@ -51,6 +51,8 @@ export default class TrackDetailsComponent implements OnInit {
 
   public messages: Message[] = [];
 
+  public link: string = '';
+
   private messageSubscription!: Subscription;
   private logSubscription!: Subscription;
   private errorSubscription!: Subscription;
@@ -90,6 +92,15 @@ export default class TrackDetailsComponent implements OnInit {
           icon: 'pi pi-info-circle',
         };
         this.messages.push(newMessage);
+
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const matches = log.match(urlRegex);
+
+        // Si se encuentra una coincidencia, almacenar el enlace en la variable `link`
+        if (matches && matches.length > 0) {
+          this.link = matches[0]; // Aquí almacenas el primer enlace encontrado
+        }
+
         if (
           log.includes(
             '======================================================='
@@ -182,5 +193,29 @@ export default class TrackDetailsComponent implements OnInit {
 
     // Abrir la URL en una nueva pestaña
     window.open(mapsUrl, '_blank');
+  }
+
+  copyToClipboard() {
+    if (this.link) {
+      navigator.clipboard
+        .writeText(this.link)
+        .then(() => {
+          this.messageService.add({
+            severity: 'success',
+            detail: 'Enlace copiado al portapapeles',
+          });
+        })
+        .catch((err) => {
+          this.messageService.add({
+            severity: 'error',
+            detail: 'Error al copiar al portapapeles',
+          });
+        });
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        detail: 'No hay enlace para copiar',
+      });
+    }
   }
 }
